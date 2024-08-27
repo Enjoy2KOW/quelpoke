@@ -1,4 +1,4 @@
-name: Build and Deploy Docker Image
+name: QuelPoke Pokémon
 
 on:
   push:
@@ -23,8 +23,7 @@ jobs:
       env:
         GCP_AUTH: ${{ secrets.GCP_Auth }}
       run: |
-        echo $GCP_AUTH | base64 --decode > /tmp/key.json
-        gcloud auth activate-service-account --key-file=/tmp/key.json
+        echo "$GCP_AUTH" > /tmp/key.json
         cat /tmp/key.json | docker login -u _json_key_base64 --password-stdin https://europe-west9-docker.pkg.dev
 
     - name: Build Docker image

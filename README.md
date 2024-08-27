@@ -32,19 +32,19 @@ L'interface utilisateur est minimaliste et présente le résultat de manière cl
 
 1. Cloner le dépôt (si ce n'est pas déjà fait)
 
-2. Ouvrir le projet dans Visual Studio
+2. Ouvrir le projet dans **Visual Studio**
 
 3. Construire l'image Docker
 
-docker build -t mon-image:latest .
+`docker build -t mon-image:latest .`
 
 4. Exécuter le conteneur Docker
 
-docker run -d -p 8080:80 --name mon-conteneur mon-image:latest
+`docker run -d -p 8080:80 --name mon-conteneur mon-image:latest`
 
 5. Accéder à l'application
 
-http://localhost:8080
+`http://localhost:8080`
 
 6. Entrer le prénom dans le formulaire pour découvrir le Pokémon associé.
 

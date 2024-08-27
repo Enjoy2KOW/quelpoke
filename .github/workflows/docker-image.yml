@@ -14,17 +14,18 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4  # Updated to v4 to ensure Node.js 20 compatibility
+      uses: actions/checkout@v4  # Updated to v4 for Node.js 20 compatibility
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3  # Updated to v3 to ensure Node.js 20 compatibility
+      uses: docker/setup-buildx-action@v3  # Updated to v3 for Node.js 20 compatibility
 
     - name: Authenticate to Google Artifact Registry
       env:
-        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCP_Auth }}
+        GCP_AUTH: ${{ secrets.GCP_Auth }}  # Using the GCP_Auth secret
       run: |
-        echo ${{ secrets.GCP_Auth }} | base64 --decode > key.json
-        cat key.json | docker login -u _json_key_base64 --password-stdin https://europe-west9-docker.pkg.dev
+        echo $GCP_AUTH | base64 --decode > /tmp/key.json
+        gcloud auth activate-service-account --key-file=/tmp/key.json
+        cat /tmp/key.json | docker login -u _json_key_base64 --password-stdin https://europe-west9-docker.pkg.dev
 
     - name: Build Docker image
       run: |

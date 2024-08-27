@@ -23,27 +23,30 @@ L'interface utilisateur est minimaliste et présente le résultat de manière cl
 
 ### Prérequis
 
-- Go doit être installé sur la machine. Le téléchargement est disponible [ici](https://golang.org/dl/).
+- **Go** doit être installé sur la machine. Le téléchargement est disponible [ici](https://golang.org/dl/).
+- **Docker** : Assurez-vous que Docker est installé et en cours d'exécution sur votre machine. Vous pouvez le télécharger [ici](https://www.docker.com/get-started).
+- **Visual Studio** : Visual Studio doit être installé. Vous pouvez le télécharger [ici](https://visualstudio.microsoft.com/fr/downloads/).
+- **Git** (facultatif) : Pour cloner ce dépôt si vous ne l'avez pas encore fait.
 
 ### Étapes
 
-1. Cloner ce dépôt sur la machine locale :
-   ```bash
-   git clone https://storage.googleapis.com/quelpoke/quelpoke.zip
-   cd votre-repertoire
-   ```
+1. Cloner le dépôt (si ce n'est pas déjà fait)
 
-2. Lancer le serveur Go :
-   ```bash
-   go run main.go
-   ```
+2. Ouvrir le projet dans Visual Studio
 
-3. Accéder à l'application via le navigateur à l'URL suivante :
-   ```
-   http://localhost:8080
-   ```
+3. Construire l'image Docker
 
-4. Entrer le prénom dans le formulaire pour découvrir le Pokémon associé.
+docker build -t mon-image:latest .
+
+4. Exécuter le conteneur Docker
+
+docker run -d -p 8080:80 --name mon-conteneur mon-image:latest
+
+5. Accéder à l'application
+
+http://localhost:8080
+
+6. Entrer le prénom dans le formulaire pour découvrir le Pokémon associé.
 
 ### Remarque
 

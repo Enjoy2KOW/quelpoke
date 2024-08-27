@@ -1,20 +1,42 @@
-name: Quelpoke Pokemon
+name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main  # Déclenche le workflow sur les pushes vers la branche principale
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx@v2
-      - name: Login to GCP registry
-        run: |
-          echo "${{ secrets.GCP_AUTH }}" | docker login -u _json_key_base64 --password-stdin https://europe-west9-docker.pkg.dev
-      - name: Build and push
-        run: |
-          docker buildx build --platform linux/amd64 --tag europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/pokemon-finder .
-          docker push europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/pokemon-finder
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Cache Docker layers
+      uses: actions/cache@v3
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-buildx-
+
+    - name: Log in to Google Container Registry
+      env:
+        GCP_AUTH: ${{ secrets.GCP_AUTH }}
+      run: echo "${{ secrets.GCP_AUTH }}" | docker login -u _json_key_base64 --password-stdin https://europe-west9-docker.pkg.dev
+
+    - name: Build Docker image
+      run: docker build --tag monapp .
+
+    - name: Tag Docker image
+      run: docker tag monapp europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/pokemon-finder
+
+    - name: Push Docker image
+      run: docker push europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/pokemon-finder

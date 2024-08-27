@@ -19,11 +19,16 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
+   - name: Debug: Print the first few characters of the GCP_Auth secret
+      run: |
+        echo "${{ secrets.GCP_Auth:0:100 }}"
+
     - name: Authenticate to Google Artifact Registry
       env:
         GCP_AUTH: ${{ secrets.GCP_Auth }}
       run: |
         echo "$GCP_AUTH" > /tmp/key.json
+        cat /tmp/key.json  # Ensure that the JSON file is correctly formatted
         cat /tmp/key.json | docker login -u _json_key_base64 --password-stdin https://europe-west9-docker.pkg.dev
 
     - name: Build Docker image

@@ -1,4 +1,2 @@
-main.exe
-*.json
-*.old
-*.key
+key.json
+my-private.key

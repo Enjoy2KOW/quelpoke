@@ -1,44 +1,20 @@
-name: QuelPoke Pokémon
+name: Quelpoke Pokemon
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-   - name: Debug: Print the first few characters of the GCP_Auth secret
-      run: |
-        echo "${{ secrets.GCP_Auth:0:100 }}"
-
-    - name: Authenticate to Google Artifact Registry
-      env:
-        GCP_AUTH: ${{ secrets.GCP_Auth }}
-      run: |
-        echo "$GCP_AUTH" > /tmp/key.json
-        cat /tmp/key.json  # Ensure that the JSON file is correctly formatted
-        cat /tmp/key.json | docker login -u _json_key_base64 --password-stdin https://europe-west9-docker.pkg.dev
-
-    - name: Build Docker image
-      run: |
-        docker build -t monapp:latest .
-
-    - name: Tag Docker image for Google Artifact Registry
-      run: |
-        docker tag monapp:latest europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/monapp:latest
-
-    - name: Push Docker image to Google Artifact Registry
-      run: |
-        docker push europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/monapp:latest
+      - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx@v2
+      - name: Login to GCP registry
+        run: |
+          echo "${{ secrets.GCP_AUTH }}" | docker login -u _json_key_base64 --password-stdin https://europe-west9-docker.pkg.dev
+      - name: Build and push
+        run: |
+          docker buildx build --platform linux/amd64 --tag europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/pokemon-finder .
+          docker push europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/pokemon-finder

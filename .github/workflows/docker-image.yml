@@ -1,9 +1,9 @@
-name: QuelPoke Build
+name: QuelPoke Build & Push
 
 on:
   push:
     branches:
-      - main
+      - main, dev
 
 jobs:
   build-and-push:

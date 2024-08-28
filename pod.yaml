@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-aymeric
+  namespace: aymeric
+spec:
+  containers:
+  - name: pokemon-finder
+    image: europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/pokemon-finder:latest
+    ports:
+    - containerPort: 8080

@@ -15,4 +15,4 @@ spec:
         value: /aymeric
     backendRefs:
     - name: my-service-pokemonfinder
-      port: 8080
+      port: 80

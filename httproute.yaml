@@ -1,0 +1,18 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: pokemon-finder-route
+  namespace: aymeric
+spec:
+  parentRefs:
+  - kind: Gateway
+    name: external-http-gateway
+    namespace: infra
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /aymeric
+    backendRefs:
+    - name: my-service-pokemonfinder
+      port: 8080

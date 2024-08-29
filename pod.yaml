@@ -7,5 +7,9 @@ spec:
   containers:
   - name: pokemon-finder
     image: europe-west9-docker.pkg.dev/infal-devops-sysops/student-aymeric/pokemon-finder:latest
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
     ports:
-    - containerPort: 8080
+      - containerPort: 8080
